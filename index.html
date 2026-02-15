@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MuseMind</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<header>
+<h1>🧠 MuseMind</h1>
+
+<nav>
+<button onclick="showSection('journal')">Journal</button>
+<button onclick="showSection('history')">History</button>
+<button onclick="showSection('dashboard')">Dashboard</button>
+<button onclick="exportData()">Export</button>
+</nav>
+</header>
+
+<section id="journal">
+<div class="card">
+
+<h2>Write Your Thoughts</h2>
+
+<textarea id="entry"></textarea>
+
+<div class="row">
+<button onclick="startVoice()">🎤 Voice</button>
+<button onclick="autoDetectEmotion()">🤖 Detect</button>
+</div>
+
+<select id="emotion">
+<option>Happy</option>
+<option>Sad</option>
+<option>Stressed</option>
+<option>Calm</option>
+<option>Angry</option>
+<option>Anxious</option>
+</select>
+
+<button onclick="saveEntry()">Save Entry</button>
+
+<p id="reflection"></p>
+
+</div>
+</section>
+
+<section id="history">
+<div class="card">
+<h2>History</h2>
+<div id="historyList"></div>
+</div>
+</section>
+
+<section id="dashboard">
+<div class="card">
+<h2>Dashboard</h2>
+<canvas id="moodChart"></canvas>
+<div id="calendar"></div>
+</div>
+</section>
+
+<footer>MuseMind © 2026</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
