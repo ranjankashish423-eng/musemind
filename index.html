@@ -1,70 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>MuseMind</title>
-<link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <title>MuseMind</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-<header>
-<h1>🧠 MuseMind</h1>
+<h1>MuseMind AI Journal</h1>
 
-<nav>
-<button onclick="showSection('journal')">Journal</button>
-<button onclick="showSection('history')">History</button>
-<button onclick="showSection('dashboard')">Dashboard</button>
-<button onclick="exportData()">Export</button>
-</nav>
-</header>
+<!-- LOGIN -->
+<div class="box" id="loginBox">
+    <h2>Create Profile</h2>
 
-<section id="journal">
-<div class="card">
+    <input id="name" placeholder="Enter your name">
+    <input type="number" id="age" placeholder="Enter your age">
 
-<h2>Write Your Thoughts</h2>
+    <select id="gender">
+        <option value="">Select Gender</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+    </select>
 
-<textarea id="entry"></textarea>
-
-<div class="row">
-<button onclick="startVoice()">🎤 Voice</button>
-<button onclick="autoDetectEmotion()">🤖 Detect</button>
+    <button onclick="login()">Start Journaling</button>
 </div>
 
-<select id="emotion">
-<option>Happy</option>
-<option>Sad</option>
-<option>Stressed</option>
-<option>Calm</option>
-<option>Angry</option>
-<option>Anxious</option>
-</select>
+<!-- APP -->
+<div id="app" style="display:none;">
 
-<button onclick="saveEntry()">Save Entry</button>
+    <h2 id="welcome"></h2>
 
-<p id="reflection"></p>
+    <div class="box">
+        <textarea id="entry" placeholder="Write your feelings..."></textarea>
+        <button onclick="analyzeEmotion()">Analyze</button>
+        <p id="result"></p>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="box">
+        <h3>Your Journal History</h3>
+        <div id="historyBox"></div>
+    </div>
+
+    <div class="box">
+        <h3>Dashboard</h3>
+        <div id="dashboard"></div>
+        <canvas id="chart"></canvas>
+    </div>
+
+    <button onclick="logout()">Logout</button>
 
 </div>
-</section>
-
-<section id="history">
-<div class="card">
-<h2>History</h2>
-<div id="historyList"></div>
-</div>
-</section>
-
-<section id="dashboard">
-<div class="card">
-<h2>Dashboard</h2>
-<canvas id="moodChart"></canvas>
-<div id="calendar"></div>
-</div>
-</section>
-
-<footer>MuseMind © 2026</footer>
 
 <script src="script.js"></script>
+
 </body>
 </html>
