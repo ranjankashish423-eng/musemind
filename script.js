@@ -1,103 +1,142 @@
-alert("JS Loaded");
+let history = [];
 
-let entries=JSON.parse(localStorage.getItem("entries"))||[];
-let chart=null;
+// LOGIN
+function login() {
+    let name = document.getElementById("name").value;
+    let age = document.getElementById("age").value;
+    let gender = document.getElementById("gender").value;
 
-function showSection(id){
-document.querySelectorAll("section").forEach(s=>s.style.display="none");
-document.getElementById(id).style.display="block";
+    if (name === "" || age === "" || gender === "") {
+        alert("Please fill all details");
+        return;
+    }
 
-if(id==="dashboard") loadChart();
-if(id==="history") loadHistory();
+    let user = { name, age, gender };
+    localStorage.setItem("user", JSON.stringify(user));
+
+    showApp(user);
 }
 
-window.onload=()=>showSection("journal");
+// SHOW APP
+function showApp(user) {
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("app").style.display = "block";
 
-function saveEntry(){
-
-let text=entry.value.trim();
-let emotion=document.getElementById("emotion").value;
-
-if(!text){
-alert("Write something");
-return;
+    document.getElementById("welcome").innerText =
+        `Welcome ${user.name} (${user.gender}, ${user.age})`;
 }
 
-entries.push({
-text,
-emotion,
-date:new Date().toISOString().split("T")[0]
-});
+// LOAD DATA
+window.onload = function () {
+    let savedUser = localStorage.getItem("user");
+    if (savedUser) showApp(JSON.parse(savedUser));
 
-localStorage.setItem("entries",JSON.stringify(entries));
+    let savedHistory = localStorage.getItem("history");
+    if (savedHistory) {
+        history = JSON.parse(savedHistory);
+        updateDashboard();
+        displayHistory();
+    }
+};
 
-reflection.innerText=generateReflection(emotion);
-entry.value="";
+// LOGOUT
+function logout() {
+    localStorage.clear();
+    location.reload();
 }
 
-function generateReflection(e){
-return{
-Happy:"Keep smiling 🌟",
-Sad:"You are strong 💙",
-Stressed:"Breathe slowly",
-Calm:"Stay peaceful 🌿",
-Angry:"Relax your mind",
-Anxious:"Everything will be okay"
-}[e];
+// EMOTION ANALYSIS
+function analyzeEmotion() {
+
+    let text = document.getElementById("entry").value.toLowerCase();
+
+    if (text === "") {
+        alert("Write something first");
+        return;
+    }
+
+    let scores = { Happy: 0, Sad: 0, Stressed: 0, Calm: 0 };
+
+    let happy = ["happy","khush","good","😊"];
+    let sad = ["sad","dukhi","😢"];
+    let stress = ["stress","tension","exam","😡"];
+    let calm = ["calm","relax","peace"];
+
+    happy.forEach(w => { if (text.includes(w)) scores.Happy++; });
+    sad.forEach(w => { if (text.includes(w)) scores.Sad++; });
+    stress.forEach(w => { if (text.includes(w)) scores.Stressed++; });
+    calm.forEach(w => { if (text.includes(w)) scores.Calm++; });
+
+    if (Object.values(scores).every(v => v === 0)) scores.Calm = 1;
+
+    let sorted = Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+
+    let primary = sorted[0][0];
+
+    document.getElementById("result").innerHTML =
+        `Emotion: ${primary}`;
+
+    // SAVE FULL ENTRY
+    let entryObj = {
+        text: text,
+        emotion: primary
+    };
+
+    history.push(entryObj);
+    localStorage.setItem("history", JSON.stringify(history));
+
+    displayHistory();
+    updateDashboard();
+
+    document.getElementById("entry").value = "";
 }
 
-function autoDetectEmotion(){
-let t=entry.value.toLowerCase();
-if(t.includes("happy")) emotion.value="Happy";
-else if(t.includes("sad")) emotion.value="Sad";
-else if(t.includes("stress")) emotion.value="Stressed";
-else if(t.includes("calm")) emotion.value="Calm";
-else if(t.includes("angry")) emotion.value="Angry";
-else if(t.includes("anxious")) emotion.value="Anxious";
-else alert("Not detected");
+// DISPLAY HISTORY
+function displayHistory() {
+    let box = document.getElementById("historyBox");
+    box.innerHTML = "";
+
+    history.slice().reverse().forEach(entry => {
+        box.innerHTML += `
+            <p>• ${entry.text} → <b>${entry.emotion}</b></p>
+        `;
+    });
 }
 
-function startVoice(){
-let r=new(window.SpeechRecognition||webkitSpeechRecognition)();
-r.start();
-r.onresult=e=>entry.value=e.results[0][0].transcript;
+// DASHBOARD
+function updateDashboard() {
+
+    let counts = { Happy: 0, Sad: 0, Stressed: 0, Calm: 0 };
+
+    history.forEach(e => counts[e.emotion]++);
+
+    document.getElementById("dashboard").innerHTML = `
+        <p>Happy: ${counts.Happy}</p>
+        <p>Sad: ${counts.Sad}</p>
+        <p>Stressed: ${counts.Stressed}</p>
+        <p>Calm: ${counts.Calm}</p>
+    `;
+
+    updateChart(counts);
 }
 
-function loadHistory(){
-historyList.innerHTML="";
-entries.slice().reverse().forEach(e=>{
-historyList.innerHTML+=`<div class='card'>${e.date}<br>${e.text}<br>${e.emotion}</div>`;
-});
-}
+// CHART
+let chart;
 
-function loadChart(){
+function updateChart(counts) {
+    let ctx = document.getElementById("chart");
 
-let c={};
-entries.forEach(e=>c[e.emotion]=(c[e.emotion]||0)+1);
+    if (chart) chart.destroy();
 
-if(chart) chart.destroy();
-
-chart=new Chart(moodChart,{
-type:"bar",
-data:{
-labels:Object.keys(c),
-datasets:[{label:"Emotions",data:Object.values(c)}]
-}
-});
-
-generateCalendar();
-}
-
-function generateCalendar(){
-calendar.innerHTML="";
-entries.forEach(e=>{
-calendar.innerHTML+=`<div class='day'>${e.date.split("-")[2]}</div>`;
-});
-}
-
-function exportData(){
-let a=document.createElement("a");
-a.href="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(entries));
-a.download="musemind.json";
-a.click();
+    chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Happy","Sad","Stressed","Calm"],
+            datasets: [{
+                data: [counts.Happy,counts.Sad,counts.Stressed,counts.Calm],
+                backgroundColor: ["green","red","orange","blue"]
+            }]
+        },
+        options: { plugins:{legend:{display:false}} }
+    });
 }
