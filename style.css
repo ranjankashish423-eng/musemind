@@ -1,84 +1,35 @@
-*{font-family:Arial}
-
-body{
-margin:0;
-background:#f2f4ff;
+body {
+    font-family: Arial;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    text-align: center;
 }
 
-header{
-background:#4f46e5;
-color:white;
-text-align:center;
-padding:15px;
+.box {
+    background: #1e293b;
+    padding: 20px;
+    margin: 20px auto;
+    width: 360px;
+    border-radius: 10px;
 }
 
-nav button{
-margin:5px;
-padding:8px 14px;
-border:none;
-border-radius:6px;
-background:white;
-color:#4f46e5;
-cursor:pointer;
+input, textarea, select {
+    width: 90%;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 6px;
+    border: none;
 }
 
-section{
-display:none;
-padding:30px;
-max-width:700px;
-margin:auto;
+button {
+    padding: 10px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    cursor: pointer;
 }
 
-.card{
-background:white;
-padding:20px;
-border-radius:10px;
-box-shadow:0 4px 10px rgba(0,0,0,.1);
-}
-
-textarea{
-width:100%;
-height:120px;
-}
-
-button{
-background:#4f46e5;
-color:white;
-border:none;
-padding:10px;
-margin-top:10px;
-border-radius:6px;
-cursor:pointer;
-}
-
-select{
-width:100%;
-padding:8px;
-margin-top:10px;
-}
-
-.row{
-display:flex;
-gap:10px;
-}
-
-#calendar{
-display:grid;
-grid-template-columns:repeat(7,1fr);
-gap:5px;
-margin-top:10px;
-}
-
-.day{
-background:#4f46e5;
-color:white;
-text-align:center;
-border-radius:4px;
-padding:5px;
-}
-
-footer{
-text-align:center;
-padding:15px;
-color:#666;
+#historyBox {
+    text-align: left;
+    font-size: 14px;
 }
