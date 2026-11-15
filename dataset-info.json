@@ -35,5 +35,29 @@
   "task": "multi-label emotion classification",
   "model": "MicahB/roberta-base-go_emotions",
   "inference": "Transformers.js browser inference",
-  "fallback": "MuseMind rule-based engine for Hindi/Hinglish or model failure"
+  "fallback": "MuseMind rule-based engine is used if the pretrained model fails; non-English journal text is currently rejected rather than analyzed.",
+  "product_features": {
+    "reflection_support": "Rule-based Thought Decoder using saved text, emotion signals, sentence analysis and detected context categories",
+    "personal_memory": "Local keyword matching across the current user's journal entries; no semantic embedding or external LLM retrieval",
+    "growth_support": "Optional rule-based suggestions and user-managed action list",
+    "voice_input": "Browser Web Speech API where supported"
+  },
+  "storage": "Browser localStorage; no backend or secure server-side authentication in this prototype",
+  "limitations": [
+    "Non-English journal text is currently rejected; the rule-based fallback is for model failure, not Hindi/Hinglish support.",
+    "The model is pretrained/fine-tuned and is not trained by MuseMind",
+    "Emotion predictions are signals, not facts or clinical assessments",
+    "Thought Decoder and Growth Studio use local rules, not an LLM API",
+    "Memory Mirror uses keyword matching, not semantic search",
+    "Voice input depends on browser/device support and speech service behaviour"
+  ],
+  "musemind_updates": {
+    "journal_metadata": [
+      "time_period: Morning/Afternoon/Evening/Night",
+      "entry_context: Personal/Academic/Relationships/Family/Work/Health/Other"
+    ],
+    "time_of_day_insights": "Counts the user-selected time period across that user’s own saved entries. It does not infer a universal preferred journaling time.",
+    "human_feedback": "Users may correct the predicted GoEmotions label on saved entries. Corrections are stored locally and included in exports; they do not automatically train the deployed model.",
+    "training_pipeline": "See training/finetune_musemind.py. This is a reproducible fine-tuning pipeline; no MuseMind-specific model weights have been trained or evaluated yet."
+  }
 }

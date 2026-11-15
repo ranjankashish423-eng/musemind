@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MuseMind | AI-Aware Emotion Journal</title>
+<title>MuseMind | Personal Reflection & Emotional Intelligence</title>
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="script.js"></script>
@@ -17,7 +17,7 @@
     <div class="hero-text">
       <div class="hero-kicker"><span class="kicker-dot"></span> A quieter way to understand your day</div>
       <h1>Understand your <em>inner world.</em></h1>
-      <p>Write honestly. Notice the patterns. MuseMind turns everyday journal entries into clear, personal emotion insights.</p>
+      <p>A private space to express your thoughts, understand emotional signals and discover patterns across your own experiences.</p>
 
       <div class="emotion-preview" aria-label="Emotion insight preview">
         <div class="preview-top">
@@ -48,22 +48,20 @@
   </div>
 
   <div class="login-right">
-    <div class="profile-card">
-      <div class="profile-icon">👋</div>
-      <h2>Welcome to MuseMind</h2>
-      <p>Create your profile to begin. Journaling as the same name keeps your entries private to you on this device.</p>
-      <label>Name</label>
-      <input id="name" type="text" placeholder="Enter your name">
-      <label>Age</label>
-      <input id="age" type="number" placeholder="Enter your age" min="1" max="100">
-      <label>Gender</label>
-      <select id="gender">
-        <option value="">Select gender</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Other">Other</option>
-      </select>
-      <button class="primary-btn" onclick="MuseMind.login()">Begin My Journey →</button>
+    <div class="profile-card login-card">
+      <div class="login-card-top"><div class="profile-icon">✦</div><span class="local-badge"><i></i> PRIVATE BY DESIGN</span></div>
+      <p class="form-eyebrow" id="loginEyebrow">YOUR SPACE STARTS HERE</p>
+      <h2 id="loginTitle">Make room for your thoughts.</h2>
+      <p id="loginDescription">Create a local profile and begin with one thought. No streaks, no pressure — just a space that is yours.</p>
+      <div class="login-mode-switch"><button type="button" class="active" id="createModeBtn" onclick="MuseMind.setLoginMode('create')">New here</button><button type="button" id="returnModeBtn" onclick="MuseMind.setLoginMode('return')">I have a profile</button></div>
+      <label for="name">What should we call you?</label>
+      <input id="name" type="text" placeholder="Your first name" autocomplete="given-name" required>
+      <div id="optionalProfileFields" class="optional-profile-fields">
+        <div class="form-two-col"><div><label for="age">Age <span>(optional)</span></label><input id="age" type="number" placeholder="Age" min="13" max="100"></div><div><label for="gender">Gender <span>(optional)</span></label><select id="gender"><option value="">Prefer not to say</option><option value="Female">Female</option><option value="Male">Male</option><option value="Non-binary">Non-binary</option><option value="Other">Other</option></select></div></div>
+      </div>
+      <button class="primary-btn login-submit" id="loginSubmit" onclick="MuseMind.login()">Create my space <span>→</span></button>
+      <p class="login-footnote" id="loginFootnote">This is a local prototype, not secure password-based authentication. Your entries stay in this browser.</p>
+      <div class="login-quote"><span>“</span><p>You don't have to figure everything out today. You can just begin.</p></div>
     </div>
   </div>
 </section>
@@ -79,16 +77,14 @@
   </div>
   <!-- desktop sidebar -->
   <aside class="sidebar">
-    <div class="sidebar-brand"><div class="logo small">M</div><div><strong>MuseMind</strong><small>EMOTION-AWARE JOURNAL</small></div></div>
+    <div class="sidebar-brand"><div class="logo small">M</div><div><strong>MuseMind</strong><small>A SPACE FOR WHAT MATTERS</small></div></div>
     <div class="nav-links">
-      <button class="nav-link" data-section="overview"><span class="nav-icon">🏠</span>Overview</button>
-      <button class="nav-link" data-section="journal"><span class="nav-icon">✍️</span>New Journal</button>
-      <button class="nav-link" data-section="analysis"><span class="nav-icon">🧠</span>Emotion Analysis</button>
-      <button class="nav-link" data-section="timeline"><span class="nav-icon">📈</span>Mood Timeline</button>
-      <button class="nav-link" data-section="history"><span class="nav-icon">📖</span>Emotion History</button>
-      <button class="nav-link" data-section="insights"><span class="nav-icon">🧬</span>Insights</button>
-      <button class="nav-link" data-section="calendar"><span class="nav-icon">🗓️</span>Mood Calendar</button>
-      <button class="nav-link" data-section="profile"><span class="nav-icon">👤</span>Profile</button>
+      <button class="nav-link" data-section="overview"><span class="nav-icon">⌂</span>Home</button>
+      <button class="nav-link" data-section="journal"><span class="nav-icon">✎</span>Write</button>
+      <button class="nav-link" data-section="history"><span class="nav-icon">◷</span>My Moments</button>
+      <button class="nav-link" data-section="insights"><span class="nav-icon">✧</span>My Insights</button>
+      <button class="nav-link" data-section="calendar"><span class="nav-icon">▦</span>Calendar</button>
+      <button class="nav-link" data-section="knowledge"><span class="nav-icon">▤</span>My Library</button>
     </div>
     <div class="sidebar-footer">
       <div class="sidebar-user">
@@ -104,21 +100,21 @@
     <!-- ============ OVERVIEW ============ -->
     <div class="view active" id="view-overview">
       <div class="view-header">
-        <div><p class="view-eyebrow">YOUR PERSONAL SPACE</p><h1 id="welcomeHeading">Welcome back 👋</h1><p>Take a moment to check in with yourself.</p></div>
-        <div class="date-pill"><span>Today</span><strong id="todayDate">—</strong><small id="todayTime">—</small></div>
+        <div><p class="view-eyebrow">YOUR PERSONAL SPACE</p><h1 id="welcomeHeading">Welcome back 👋</h1><p>Pause, express something or revisit a reflection whenever it feels useful.</p></div>
+        <div class="date-pill"><strong id="todayDate">—</strong><small id="todayTime"></small></div>
       </div>
 
       <div class="stats-grid">
-        <div class="stat-card"><div class="stat-icon coral">📝</div><div><small>Journal Entries</small><strong id="statEntries">0</strong></div></div>
-        <div class="stat-card"><div class="stat-icon mixed">🧠</div><div><small>Dominant Emotion</small><strong id="statDominant">—</strong></div></div>
-        <div class="stat-card"><div class="stat-icon teal">🔥</div><div><small>Journal Streak</small><strong id="statStreak">0 days</strong></div></div>
-        <div class="stat-card"><div class="stat-icon rose">✨</div><div><small>Mood Score</small><strong id="statMood">—</strong></div></div>
+        <button class="stat-card stat-action" type="button" onclick="MuseMind.goToSection('history')" aria-label="Open journal entries"><div class="stat-icon coral">📝</div><div><small>Journal Entries</small><strong id="statEntries">0</strong></div></button>
+        <button class="stat-card stat-action" type="button" onclick="MuseMind.goToSection('history')" aria-label="Open voice notes"><div class="stat-icon mixed">🎙</div><div><small>Voice Notes</small><strong id="statDominant">0</strong></div></button>
+        <button class="stat-card stat-action" type="button" onclick="MuseMind.goToSection('insights')" aria-label="Open reflection insights"><div class="stat-icon teal">✦</div><div><small>Days Reflected</small><strong id="statStreak">0 days</strong></div></button>
+        <button class="stat-card stat-action" type="button" onclick="MuseMind.goToSection('knowledge')" aria-label="Open saved documents"><div class="stat-icon rose">▤</div><div><small>Saved Documents</small><strong id="statMood">0</strong></div></button>
       </div>
       <div class="dashboard-command">
         <div class="command-copy">
           <span class="command-kicker">MUSEMIND · TODAY</span>
-          <h2 id="dashboardHeadline">Your emotional space is ready.</h2>
-          <p id="dashboardSubline">Write freely and let your journal become a map of your patterns.</p>
+          <h2 id="dashboardHeadline">Your space to pause, express and understand.</h2>
+          <p id="dashboardSubline">Write, speak or check in. MuseMind helps you reflect at your own pace.</p>
         </div>
         <div class="command-actions">
           <button class="command-btn secondary" onclick="MuseMind.goToSection('history')">View journal</button>
@@ -135,11 +131,6 @@
         <div class="live-status"><i></i><span id="liveClock">--:--:--</span></div>
       </div>
 
-      <div class="card" style="margin-bottom:16px;">
-        <div class="card-head"><div class="card-symbol">🏅</div><div><small>MILESTONES</small><h3>Your badges</h3></div></div>
-        <div class="badge-grid" id="badgeGrid"></div>
-      </div>
-
       <div class="card">
         <div class="card-head"><div class="card-symbol">📖</div><div><small>RECENT</small><h3>Latest entries</h3></div></div>
         <div id="overviewRecent"></div>
@@ -154,7 +145,21 @@
 
       <div class="journal-layout">
         <div class="card journal-card">
-          <textarea id="entry" maxlength="1500" placeholder="Write whatever you're feeling..." oninput="MuseMind.updateCounter()"></textarea>
+          <div class="entry-context-panel">
+            <div class="entry-context-heading"><div><small>SET THE MOMENT</small><strong>When are you writing?</strong></div><span class="auto-time-pill" id="autoTimeLabel">Auto-detected</span></div>
+            <div class="entry-context-grid">
+              <div><label for="entryTimePeriod">Time of day</label><select id="entryTimePeriod"><option value="Morning">☀️ Morning</option><option value="Afternoon">🌤 Afternoon</option><option value="Evening">🌆 Evening</option><option value="Night">🌙 Night</option></select></div>
+              <div><label for="entryContext">What's this entry about?</label><select id="entryContext"><option value="Personal">Personal thoughts</option><option value="Academic">College / studies</option><option value="Relationships">Relationships</option><option value="Family">Family</option><option value="Work">Work / career</option><option value="Health">Health / wellbeing</option><option value="Other">Something else</option></select></div>
+            </div>
+            <p class="tiny-note">Time is filled in from your device and can be changed. Context is optional and helps you notice patterns over time.</p>
+          </div>
+          <textarea id="entry" maxlength="3000" placeholder="Write whatever is on your mind. It doesn't have to be perfectly explained..." oninput="MuseMind.updateCounter()"></textarea>
+          <div class="voice-studio">
+            <div class="voice-studio-top"><div><small>VOICE JOURNAL</small><strong>Say it naturally. Edit it before saving.</strong></div><span class="voice-live" id="voiceStatus"><i></i> Ready</span></div>
+            <div class="voice-controls"><label class="voice-language-label" for="voiceLanguage">Recognition language</label><select id="voiceLanguage"><option value="en-IN">English (India)</option><option value="en-US">English (US)</option></select><button class="voice-record-btn" type="button" onclick="MuseMind.toggleVoiceInput()" id="voiceInputBtn"><span>●</span> Start speaking</button><button class="mini-btn" type="button" onclick="MuseMind.appendVoiceTranscript()">Add transcript to journal</button></div>
+            <div class="transcript-wrap"><div class="transcript-label"><span>LIVE TRANSCRIPT</span><span id="transcriptHint">Your words will appear here</span></div><textarea id="voiceTranscript" rows="3" placeholder="Your speech transcript will appear here. You can edit it before adding it to your journal."></textarea><div class="transcript-footer"><span id="transcriptCount">0 words</span><button type="button" class="text-link" onclick="MuseMind.clearVoiceTranscript()">Clear transcript</button></div></div>
+            <p class="tiny-note">Speech recognition availability depends on your browser and connection. MuseMind saves the editable transcript with your journal entry; it does not save raw audio.</p>
+          </div>
           <div class="editor-bottom">
             <span><span id="counter">0</span> / 1500 characters</span>
             <span id="engineStatus">AI model loads on first analysis.</span>
@@ -172,7 +177,7 @@
             <button onclick="MuseMind.quickMood('Stressed')">😰<span>Stressed</span></button>
             <button onclick="MuseMind.quickMood('Sad')">😢<span>Sad</span></button>
           </div>
-          <p class="muted-note" style="margin-top:20px;">Quick check-ins are saved to your journal history too.</p>
+          <p class="muted-note" style="margin-top:20px;">No long entry needed. Choose a check-in or skip it entirely.</p>
         </div>
       </div>
     </div>
@@ -180,7 +185,7 @@
     <!-- ============ EMOTION ANALYSIS ============ -->
     <div class="view" id="view-analysis">
       <div class="view-header analysis-command-header">
-        <div><p class="view-eyebrow">MUSEMIND EMOTION INTELLIGENCE</p><h1>Emotion Analysis</h1><p>Analyze a new thought or revisit any journal entry to see the emotional signals behind the text.</p></div>
+        <div><p class="view-eyebrow">A MOMENT OF UNDERSTANDING</p><h1>Your reflection, <em>unpacked.</em></h1><p>A gentle reading of what you shared. You are the authority on how you feel.</p></div>
         <div class="analysis-header-actions">
           <button class="command-btn secondary" onclick="MuseMind.exportCurrentAnalysis()">⇩ Export Analysis</button>
         </div>
@@ -198,6 +203,13 @@
         </div>
         <p class="tiny-note" id="analysisSelectionStatus">You can analyze a complete entry or a selected part of one.</p>
       </div>
+      <div class="reflection-snapshot" id="reflectionSnapshot">
+        <div class="snapshot-top"><div><span class="snapshot-kicker">A MOMENT TO NOTICE</span><h2 id="snapshotTitle">Your reflection is ready.</h2><p id="snapshotIntro">MuseMind will share a few possible signals from your words.</p></div><span class="snapshot-orbit">✦</span></div>
+        <div class="snapshot-signals" id="snapshotSignals"></div>
+        <div class="snapshot-note"><span>✧</span><div><b>Something to sit with</b><p id="snapshotReflection">Your own interpretation matters most. Take what feels useful and leave the rest.</p></div></div>
+        <div class="snapshot-feedback"><span>Does this feel close to what you meant?</span><button class="mini-btn" onclick="MuseMind.rateInterpretation('helpful')">Yes</button><button class="mini-btn" onclick="MuseMind.rateInterpretation('partial')">Partly</button><button class="mini-btn" onclick="MuseMind.rateInterpretation('not-right')">Not really</button></div>
+        <p class="snapshot-disclaimer">AI-generated reflection, not a diagnosis or a statement of fact.</p>
+      </div>
       <div class="analysis-grid analysis-hero-grid">
         <div class="emotion-main hero-emotion-card">
           <span>PRIMARY EMOTION</span>
@@ -210,7 +222,7 @@
           <div class="radial-wrap"><div id="secondaryRadial" class="radial-score"><b id="secondaryPercentRadial">0%</b><small>signal</small></div><div id="secondaryEmoji" class="big-emoji">—</div></div>
           <h3 id="secondaryEmotion">—</h3><strong id="secondaryPercent">0%</strong><p id="secondaryCategoryLine">MuseMind Category: —</p>
         </div>
-        <div class="trigger-box hero-emotion-card"><span>POSSIBLE EMOTIONAL TRIGGERS</span><div class="chip-row" id="analysisTriggers"><span class="chip chip-muted">—</span></div><p class="analysis-meta" id="analysisMeta"></p></div>
+        <div class="trigger-box hero-emotion-card"><span>POSSIBLE CONTEXT CLUES</span><div class="chip-row" id="analysisTriggers"><span class="chip chip-muted">—</span></div><p class="analysis-meta" id="analysisMeta"></p></div>
       </div>
 
       <div class="analysis-feature-grid">
@@ -225,6 +237,12 @@
         <div class="card feature-card"><div class="card-head"><div class="card-symbol">🧩</div><div><small>MAPPING LAYER</small><h3>Standard → MuseMind</h3></div><button class="mini-btn" onclick="MuseMind.showMappingLogic()">View Mapping Logic</button></div><div id="mappingContent" class="mapping-list"></div></div>
       </div>
 
+      <div class="card feature-card model-feedback-card">
+        <div class="card-head"><div class="card-symbol">🧑‍🔬</div><div><small>HUMAN-IN-THE-LOOP</small><h3>Help improve the emotion model</h3><p>If the prediction feels off, choose the emotion label that fits your experience best.</p></div></div>
+        <div class="model-feedback-row"><select id="humanEmotionLabel"><option value="">Choose a better label (optional)</option><option>admiration</option><option>amusement</option><option>anger</option><option>annoyance</option><option>approval</option><option>caring</option><option>confusion</option><option>curiosity</option><option>desire</option><option>disappointment</option><option>disapproval</option><option>disgust</option><option>embarrassment</option><option>excitement</option><option>fear</option><option>gratitude</option><option>grief</option><option>joy</option><option>love</option><option>nervousness</option><option>optimism</option><option>pride</option><option>realization</option><option>relief</option><option>remorse</option><option>sadness</option><option>surprise</option><option>neutral</option></select><button class="mini-btn" type="button" onclick="MuseMind.saveEmotionCorrection()">Save correction</button></div>
+        <p class="tiny-note" id="modelFeedbackStatus">Your correction stays in this browser. It does not retrain the live model automatically; exported corrections can be reviewed for future fine-tuning.</p>
+      </div>
+
       <div class="card feature-card sentence-box" id="sentenceBreakdown"><div class="card-head"><div class="card-symbol">🔬</div><div><small>ADVANCED NLP</small><h3>Sentence-by-sentence analysis</h3><p>Each sentence is classified independently when the standard model is available.</p></div></div><div class="sentence-list" id="sentenceList"></div></div>
 
       <div class="card feature-card"><div class="card-head"><div class="card-symbol">🛤️</div><div><small>SEQUENCE</small><h3>Emotion journey</h3></div></div><div id="emotionJourney" class="emotion-journey"></div></div>
@@ -232,6 +250,17 @@
       <div class="analysis-feature-grid">
         <div class="card feature-card"><div class="card-head"><div class="card-symbol">📝</div><div><small>SUPPORTING TEXT SIGNALS</small><h3>Text evidence</h3></div></div><p class="tiny-note">Highlights come from MuseMind's transparent keyword/trigger layer; they are not the model's internal explanation.</p><div id="textEvidence" class="evidence-text">—</div></div>
         <div class="card feature-card"><div class="card-head"><div class="card-symbol">🌐</div><div><small>LANGUAGE</small><h3>Language analysis</h3></div></div><div id="languageAnalysis" class="technical-panel">—</div></div>
+      </div>
+
+      <div class="card feature-card thought-decoder-card">
+        <div class="card-head"><div class="card-symbol">🧩</div><div><small>REFLECTION SUPPORT</small><h3>Thought Decoder</h3><p>Organises what you shared into reflection points. These are possibilities, not facts about you.</p></div></div>
+        <div id="thoughtDecoder" class="decoder-grid"><p class="muted-note">Analyze an entry to explore its context and reflection questions.</p></div>
+        <div class="decoder-feedback" id="decoderFeedback" hidden>
+          <span>Did this interpretation feel accurate?</span>
+          <button class="mini-btn" type="button" onclick="MuseMind.rateInterpretation('helpful')">Yes, mostly</button>
+          <button class="mini-btn" type="button" onclick="MuseMind.rateInterpretation('partial')">Partly</button>
+          <button class="mini-btn" type="button" onclick="MuseMind.rateInterpretation('not-right')">Not really</button>
+        </div>
       </div>
 
       <div class="analysis-feature-grid">
@@ -245,7 +274,7 @@
       </div>
 
       <div class="two-column">
-        <div class="card feature-card"><div class="card-head"><div class="card-symbol">💡</div><div><small>AI-GENERATED REFLECTION</small><h3>What MuseMind noticed</h3></div></div><p id="reflectionText">Your reflection will appear here after analysis.</p><div class="reflection-prompts" id="reflectionPrompts"></div></div>
+        <div class="card feature-card"><div class="card-head"><div class="card-symbol">💡</div><div><small>GUIDED REFLECTION</small><h3>What MuseMind noticed</h3></div></div><p id="reflectionText">Your reflection will appear here after analysis.</p><div class="reflection-prompts" id="reflectionPrompts"></div></div>
         <div class="card feature-card"><div class="card-head"><div class="card-symbol">🪞</div><div><small>COMPARISON</small><h3>Compared to previous entry</h3></div></div><div id="moodMirror"><p class="muted-note">Add another journal entry to compare your emotional state.</p></div></div>
       </div>
 
@@ -270,22 +299,12 @@
     <!-- ============ EMOTION HISTORY ============ -->
     <div class="view" id="view-history">
       <div class="view-header">
-        <div><p class="view-eyebrow">JOURNAL ARCHIVE</p><h1>Your recent thoughts</h1></div>
+        <div><p class="view-eyebrow">YOUR PERSONAL STORY</p><h1>Moments worth keeping</h1><p>Revisit what you wrote, in your own words.</p></div>
         <span class="muted-note" id="historyCount">0 entries</span>
       </div>
       <div class="history-controls">
         <input type="text" placeholder="Search your thoughts..." oninput="MuseMind.setHistoryQuery(this.value)">
-        <select onchange="MuseMind.setHistoryEmotion(this.value)">
-          <option value="all">All emotions</option>
-          <option value="Happy">Happy</option>
-          <option value="Sad">Sad</option>
-          <option value="Stressed">Stressed</option>
-          <option value="Calm">Calm</option>
-          <option value="Excited">Excited</option>
-          <option value="Angry">Angry</option>
-          <option value="Anxious">Anxious</option>
-          <option value="Confident">Confident</option>
-        </select>
+
         <select onchange="MuseMind.setHistorySort(this.value)">
           <option value="newest">Newest first</option>
           <option value="oldest">Oldest first</option>
@@ -297,10 +316,14 @@
     <!-- ============ INSIGHTS ============ -->
     <div class="view" id="view-insights">
       <div class="view-header">
-        <div><p class="view-eyebrow">YOUR EMOTION DNA</p><h1>Insights</h1><p>Patterns MuseMind has noticed in your actual entries.</p></div>
+        <div><p class="view-eyebrow">GENTLE PATTERNS, OVER TIME</p><h1>Your personal insights</h1><p>Small observations from the moments you choose to save.</p></div>
       </div>
 
       <div id="insightsContent">
+        <div class="card time-pattern-card">
+          <div class="card-head"><div class="card-symbol">🕰️</div><div><small>YOUR WRITING RHYTHM</small><h3>When do you tend to check in?</h3><p>Based on the time-of-day you selected for saved entries — not a population-wide average.</p></div></div>
+          <div id="timeOfDayInsights" class="time-of-day-insights"><p class="muted-note">Your writing rhythm will appear after you save a few entries.</p></div>
+        </div>
         <div class="insights-grid">
           <div class="card">
             <div class="card-head"><div class="card-symbol">🧬</div><div><small>DISTRIBUTION</small><h3>Emotion DNA</h3></div></div>
@@ -319,7 +342,7 @@
             <div class="emotion-list" id="distributionList"></div>
           </div>
           <div class="card">
-            <div class="card-head"><div class="card-symbol">🔎</div><div><small>PATTERNS</small><h3>Trigger → emotion</h3></div></div>
+            <div class="card-head"><div class="card-symbol">🔎</div><div><small>PATTERNS</small><h3>Context alongside emotion</h3></div></div>
             <div id="triggerAnalysis"></div>
           </div>
         </div>
@@ -334,18 +357,132 @@
     <!-- ============ MOOD CALENDAR ============ -->
     <div class="view" id="view-calendar">
       <div class="view-header">
-        <div><p class="view-eyebrow">MONTHLY VIEW</p><h1>Mood calendar</h1><p>The dominant emotion for each day you journaled.</p></div>
+        <div><p class="view-eyebrow">YOUR DATES, IN ONE PLACE</p><h1>Calendar</h1><p>University dates, deadlines, saved plans and journal moments — organised by day.</p></div>
       </div>
-      <div class="card" style="margin-bottom:16px;">
+      <div class="calendar-summary-row" id="calendarSummary"></div>
+      <div class="card calendar-main-card">
         <div class="calendar-head">
-          <button class="cal-nav-btn" onclick="MuseMind.shiftCalendar(-1)">‹</button>
+          <button class="cal-nav-btn" aria-label="Previous month" onclick="MuseMind.shiftCalendar(-1)">‹</button>
           <strong id="calendarLabel">—</strong>
-          <button class="cal-nav-btn" onclick="MuseMind.shiftCalendar(1)">›</button>
+          <div class="calendar-head-actions">
+            <button class="mini-btn" type="button" onclick="MuseMind.goToToday()">Today</button>
+            <button class="mini-btn" type="button" onclick="MuseMind.exportPlannerCalendar()">Export .ics</button>
+            <button class="cal-nav-btn" aria-label="Next month" onclick="MuseMind.shiftCalendar(1)">›</button>
+          </div>
         </div>
         <div class="cal-weekdays"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
-        <div class="cal-grid" id="calendarGrid"></div>
+        <div class="cal-grid schedule-calendar-grid" id="calendarGrid"></div>
+        <div class="calendar-legend">
+          <span><i class="legend-dot academic"></i>Academic / university</span>
+          <span><i class="legend-dot personal"></i>Personal / task</span>
+          <span><i class="legend-dot journal"></i>Journal entry</span>
+        </div>
       </div>
-      <div class="card" id="calendarDayDetail"></div>
+      <div class="card calendar-day-card" id="calendarDayDetail">
+        <div class="calendar-empty-day"><strong>Select a date</strong><p>Events and journal entries for that day will appear here.</p></div>
+      </div>
+      <div class="calendar-source-note">Dates from the MUJ Academic Calendar 2026–2027 are preloaded as editable schedule items. You can also add your own schedule items directly by selecting any date.</div>
+    </div>
+
+    <!-- ============ KNOWLEDGE VAULT ============ -->
+    <div class="view" id="view-knowledge">
+      <div class="view-header">
+        <div><p class="view-eyebrow">YOUR CONNECTED INFORMATION</p><h1>My Library</h1><p>Documents, notes and reflections you want to find again.</p></div>
+        
+      </div>
+      <section class="card library-upload-card">
+        <div class="card-head"><div class="card-symbol">↑</div><div><small>ADD TO YOUR LIBRARY</small><h3>Upload a document</h3><p>Save PDFs or images here, extract useful dates, and send reviewed events to your Calendar.</p></div></div>
+        <div class="library-upload-zone" id="libraryUploadZone">
+          <input id="libraryFileInput" type="file" accept=".pdf,image/*" hidden onchange="MuseMind.uploadLibraryDocument(this.files[0])">
+          <div class="upload-mark">＋</div>
+          <strong>Drop a PDF or image here, or <button class="text-action" type="button" onclick="document.getElementById('libraryFileInput').click()">browse files</button></strong>
+          <span class="tiny-note">The original file is saved in this browser. You can open it again from your Library.</span>
+        </div>
+        <div id="libraryUploadStatus" class="planner-status" aria-live="polite">No file selected.</div>
+        <div id="libraryExtractedDates" class="planner-extracted"></div>
+      </section>
+      <div class="knowledge-search card">
+        <div class="card-head"><div class="card-symbol">✦</div><div><small>ASK MUSEMIND</small><h3>Find something in your personal information</h3><p>Try a topic, course, deadline, project or phrase.</p></div></div>
+        <div class="memory-search-row">
+          <input id="knowledgeQuery" type="text" placeholder="e.g. What is due for Software Engineering?" onkeydown="if(event.key==='Enter')MuseMind.searchKnowledge()">
+          <button class="command-btn primary" type="button" onclick="MuseMind.searchKnowledge()">Search knowledge</button>
+        </div>
+        <div class="memory-suggestions">
+          <button class="mini-btn" type="button" onclick="MuseMind.setKnowledgeQuery('Software Engineering deadline')">Assignment deadline</button>
+          <button class="mini-btn" type="button" onclick="MuseMind.setKnowledgeQuery('Computer Networks')">Computer Networks</button>
+          <button class="mini-btn" type="button" onclick="MuseMind.setKnowledgeQuery('MuseMind project')">Project notes</button>
+          <button class="mini-btn" type="button" onclick="MuseMind.setKnowledgeQuery('anxious exam')">Past reflections</button>
+        </div>
+      </div>
+      <div id="knowledgeAnswer" class="knowledge-answer"></div>
+      <div class="knowledge-stats" id="knowledgeStats"></div>
+      <div class="knowledge-layout knowledge-layout-single">
+        <section class="card">
+          <div class="card-head"><div class="card-symbol">📄</div><div><small>DOCUMENT LIBRARY</small><h3>Saved knowledge sources</h3><p>Your saved files and the information extracted from them.</p></div></div>
+          <div id="knowledgeDocuments" class="knowledge-documents"></div>
+        </section>
+
+      </div>
+      
+    </div>
+
+    <!-- ============ MEMORY MIRROR ============ -->
+    <div class="view" id="view-memory">
+      <div class="view-header">
+        <div><p class="view-eyebrow">YOUR PERSONAL ARCHIVE</p><h1>Memory Mirror</h1><p>Find and revisit relevant moments from your own journal.</p></div>
+      </div>
+      <div class="card memory-search-card">
+        <div class="card-head"><div class="card-symbol">🪞</div><div><small>SEARCH YOUR REFLECTIONS</small><h3>What would you like to revisit?</h3><p>Search using a topic, person, situation or phrase you remember.</p></div></div>
+        <div class="memory-search-row">
+          <input id="memoryQuery" type="text" placeholder="e.g. what was worrying me before exams?" onkeydown="if(event.key==='Enter')MuseMind.searchMemories()">
+          <button class="command-btn primary" type="button" onclick="MuseMind.searchMemories()">Search memories</button>
+        </div>
+        <div class="memory-suggestions">
+          <button class="mini-btn" type="button" onclick="MuseMind.setMemoryQuery('exam')">Exam experiences</button>
+          <button class="mini-btn" type="button" onclick="MuseMind.setMemoryQuery('friend')">Relationships</button>
+          <button class="mini-btn" type="button" onclick="MuseMind.setMemoryQuery('future')">Future and goals</button>
+        </div>
+        <p class="tiny-note">Results are matched against your saved entries on this device. MuseMind does not invent memories.</p>
+      </div>
+      <div class="memory-summary" id="memorySummary"></div>
+      <div id="memoryResults" class="memory-results"><div class="empty-state"><div class="empty-icon">🪞</div><h3>Your reflections, connected</h3><p>Search a word or topic to revisit related entries.</p></div></div>
+    </div>
+
+    <!-- ============ GROWTH STUDIO ============ -->
+    <div class="view" id="view-growth">
+      <div class="view-header">
+        <div><p class="view-eyebrow">SMALL, SELF-CHOSEN STEPS</p><h1>Growth Studio</h1><p>Turn a reflection into an optional next step — at your own pace.</p></div>
+      </div>
+      <div class="growth-grid">
+        <div class="card">
+          <div class="card-head"><div class="card-symbol">🌱</div><div><small>FROM YOUR LATEST REFLECTION</small><h3>A gentle next step</h3></div></div>
+          <div id="growthSuggestion"><p class="muted-note">Analyze a journal entry to receive a relevant optional suggestion.</p></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div class="card-symbol">🎯</div><div><small>YOUR OWN INTENTIONS</small><h3>Personal action list</h3></div></div>
+          <div class="growth-add-row">
+            <input id="growthActionInput" type="text" maxlength="140" placeholder="Add a small step you want to take">
+            <button class="command-btn primary" type="button" onclick="MuseMind.addGrowthAction()">Add</button>
+          </div>
+          <div id="growthActionList" class="growth-action-list"></div>
+        </div>
+      </div>
+      <div class="card document-planner-card">
+        <div class="card-head"><div class="card-symbol">📄</div><div><small>DOCUMENT TO PLAN</small><h3>Turn dates in a document into a personal schedule</h3><p>Upload a timetable, assignment brief, event notice or PDF. Review every detected date before saving it.</p></div></div>
+        <div class="document-upload-zone" id="documentDropZone">
+          <input id="plannerFile" type="file" accept=".pdf,image/*" hidden onchange="MuseMind.extractDocumentDates(this.files[0])">
+          <div class="upload-mark">↑</div><strong>Drop a PDF or image here, or <button class="text-action" type="button" onclick="document.getElementById('plannerFile').click()">browse files</button></strong>
+          <span class="tiny-note">PDF text extraction and image OCR run in your browser. Scanned or unclear documents may need manual correction.</span>
+        </div>
+        <div id="plannerStatus" class="planner-status" aria-live="polite">No document selected yet.</div>
+        <div id="plannerExtracted" class="planner-extracted"></div>
+        <div class="planner-saved-wrap"><div class="planner-subhead"><div><strong>Your saved schedule</strong><div class="tiny-note">Stored in this browser profile</div></div><button class="mini-btn" type="button" onclick="MuseMind.exportPlannerCalendar()">Export calendar (.ics)</button></div><div id="plannerSchedule" class="planner-schedule"></div></div>
+      </div>
+
+      <div class="card weekly-reflection-card">
+        <div class="card-head"><div class="card-symbol">📆</div><div><small>LOOKING BACK</small><h3>Your weekly reflection</h3><p>A factual summary of entries from the last seven days, when enough entries exist.</p></div></div>
+        <div id="weeklyReflection"><p class="muted-note">Your weekly reflection will appear as you add entries.</p></div>
+      </div>
     </div>
 
     <!-- ============ PROFILE ============ -->
@@ -371,7 +508,7 @@
 
           <div class="profile-stats-mini">
             <div><small>ENTRIES</small><strong id="profileEntries">0</strong></div>
-            <div><small>STREAK</small><strong id="profileStreak">0 days</strong></div>
+            <div><small>REFLECTION DAYS</small><strong id="profileStreak">0 days</strong></div>
             <div><small>DOMINANT</small><strong id="profileDominant">—</strong></div>
             <div><small>AVG MOOD</small><strong id="profileMood">—</strong></div>
           </div>
@@ -380,7 +517,7 @@
         <div>
           <div class="card privacy-card" style="margin-bottom:16px;">
             <div class="card-symbol">🔒</div>
-            <div><h3>Your Journal</h3><p>Your journal entries are stored locally in this browser (localStorage), associated only with your profile. They are not sent to a server in this prototype.</p></div>
+            <div><h3>Your Journal</h3><p>Your journal entries are stored in this browser's localStorage and are not sent to a server in this prototype. Anyone with access to this browser profile may be able to access them. Do not use this prototype for highly sensitive information.</p></div>
           </div>
 
           <div class="card" style="margin-bottom:16px;">
