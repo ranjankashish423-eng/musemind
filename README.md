@@ -1,5 +1,10 @@
 # MuseMind — ETE Build
 
+## Project links
+
+- **Live application:** https://ranjankashish423-eng.github.io/musemind/
+- **GitHub repository:** https://github.com/ranjankashish423-eng/musemind
+
 MuseMind is a browser-based personal journal and reflection prototype. This build adds a connected academic calendar and a persistent document library.
 
 ## Run the application
